@@ -1,0 +1,28 @@
+2658. Maximum Number of Fish in a Grid
+
+int dfs(int **grid, const int rowNum, const int colNum, int iRow, int iCol) {
+  if (grid[iRow][iCol] == 0)
+    return 0;
+  int rs = grid[iRow][iCol];
+  grid[iRow][iCol] = 0;
+  if (iRow > 0)
+    rs += dfs(grid, rowNum, colNum, iRow - 1, iCol);
+  if (iRow < rowNum - 1)
+    rs += dfs(grid, rowNum, colNum, iRow + 1, iCol);
+  if (iCol > 0)
+    rs += dfs(grid, rowNum, colNum, iRow, iCol - 1);
+  if (iCol < colNum - 1)
+    rs += dfs(grid, rowNum, colNum, iRow, iCol + 1);
+  return rs;
+}
+int findMaxFish(int **grid, int gridSize, int *gridColSize) {
+  int max = 0, tmp;
+  for (int i = 0; i < gridSize; i++) {
+    for (int j = 0; j < *gridColSize; j++) {
+      tmp = dfs(grid, gridSize, *gridColSize, i, j);
+      if (tmp > max)
+        max = tmp;
+    }
+  }
+  return max;
+}
